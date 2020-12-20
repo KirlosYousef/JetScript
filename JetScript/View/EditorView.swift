@@ -25,8 +25,10 @@ struct EditorView: View {
             HStack{
                 PulsatingView(pulseViewModel: $pulseVModel, shouldAnimate: $shouldAnimate)
                 
-                Text(String(script.timeEstimate))
-                    .padding()
+                if (script.timeEstimate != 0){
+                    Text("Seconds remaining: \(script.timeEstimate)")
+                        .padding()
+                }
                 
                 Spacer()
                 

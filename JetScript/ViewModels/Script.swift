@@ -13,6 +13,7 @@ class Script: ObservableObject {
     @Published var output: [String] = []
     @Published var exitCode: Int32 = -1
     @Published var timeEstimate: Int = 0
+    @Published var allTime: Int = 0
     
     private let file: String = "JetScript.swift" // this is the file name which we will write to.
     private var fileURL: URL? = nil
@@ -169,12 +170,17 @@ class Script: ObservableObject {
     }
     
     /// Updates the `timeEstimate` to finish all the tasks
-    func updateTimeEstimate(){
+    private func updateTimeEstimate(){
         if !timeCountersArray.isEmpty{
             let sum = timeCountersArray.reduce(0, +)
             let avg = sum / timeCountersArray.count
-            
             timeEstimate = avg * remaningRuns
+            updateAllTime(avg)
         }
+    }
+    
+    // Updates the all time estimated for the progress bar
+    private func updateAllTime(_ avg: Int){
+        self.allTime = avg * numberOfRuns
     }
 }

@@ -18,18 +18,23 @@ struct MainView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack{
-                
-                HStack{
-                    EditorView()
-                        .frame(minWidth: geometry.size.width / 2, maxWidth: .infinity,
-                               minHeight: geometry.size.height, maxHeight: .infinity)
-                        .environmentObject(script)
+                ZStack(alignment: .bottomLeading){
+                    HStack{
+                        EditorView()
+                            .frame(minWidth: geometry.size.width / 2, maxWidth: .infinity,
+                                   minHeight: geometry.size.height, maxHeight: .infinity)
+                            .environmentObject(script)
+                        
+                        OutputScrollView()
+                            .frame(minWidth: geometry.size.width / 2, maxWidth: .infinity,
+                                   minHeight: geometry.size.height, maxHeight: .infinity)
+                            .environmentObject(script)
+                            .background(Color(.darkGray))
+                    }
                     
-                    OutputScrollView()
-                        .frame(minWidth: geometry.size.width / 2, maxWidth: .infinity,
-                               minHeight: geometry.size.height, maxHeight: .infinity)
+                    ProgressBarView()
+                        .frame(width: geometry.size.width, height: 3)
                         .environmentObject(script)
-                        .background(Color(.darkGray))
                 }
             }
             .frame(minWidth: WindowSize().minWidth,

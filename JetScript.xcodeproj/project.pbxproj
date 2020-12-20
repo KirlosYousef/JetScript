@@ -13,6 +13,7 @@
 		BC03D8F0258BD0EC005B96F8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC03D8EF258BD0EC005B96F8 /* Preview Assets.xcassets */; };
 		BC03D8F3258BD0EC005B96F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC03D8F1258BD0EC005B96F8 /* Main.storyboard */; };
 		BC03D8FC258BD4FE005B96F8 /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC03D8FB258BD4FE005B96F8 /* Script.swift */; };
+		BC34CCB9258FB3950009718E /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC34CCB8258FB3950009718E /* ProgressBarView.swift */; };
 		BC3AF685258F7C160005E3AF /* PulseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3AF684258F7C160005E3AF /* PulseViewModel.swift */; };
 		BC663578258D03F4009FA5F1 /* OutputScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC663577258D03F4009FA5F1 /* OutputScrollView.swift */; };
 		BC66357A258D0473009FA5F1 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC663579258D0473009FA5F1 /* EditorView.swift */; };
@@ -29,6 +30,7 @@
 		BC03D8F4258BD0EC005B96F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC03D8F5258BD0EC005B96F8 /* JetScript.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JetScript.entitlements; sourceTree = "<group>"; };
 		BC03D8FB258BD4FE005B96F8 /* Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
+		BC34CCB8258FB3950009718E /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		BC3AF684258F7C160005E3AF /* PulseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseViewModel.swift; sourceTree = "<group>"; };
 		BC663577258D03F4009FA5F1 /* OutputScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputScrollView.swift; sourceTree = "<group>"; };
 		BC663579258D0473009FA5F1 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				BC663577258D03F4009FA5F1 /* OutputScrollView.swift */,
 				BC663579258D0473009FA5F1 /* EditorView.swift */,
 				BC66357B258D1BBA009FA5F1 /* PulsatingView.swift */,
+				BC34CCB8258FB3950009718E /* ProgressBarView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				BC66357C258D1BBA009FA5F1 /* PulsatingView.swift in Sources */,
 				BC663578258D03F4009FA5F1 /* OutputScrollView.swift in Sources */,
 				BC66357A258D0473009FA5F1 /* EditorView.swift in Sources */,
+				BC34CCB9258FB3950009718E /* ProgressBarView.swift in Sources */,
 				BC03D8E9258BD0EB005B96F8 /* AppDelegate.swift in Sources */,
 				BC3AF685258F7C160005E3AF /* PulseViewModel.swift in Sources */,
 			);
