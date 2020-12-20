@@ -12,19 +12,24 @@ struct OutputScrollView: View {
     @EnvironmentObject var script: Script
     
     var body: some View {
-        ScrollView(){
-            ScrollViewReader { scrollView in
-                ForEach(script.output, id: \.self) { op in
-                    Text(op)
-                        .multilineTextAlignment(.leading)
-                        .font(.custom("HelveticaNeue", size: 16))
-                        .onAppear{
-                            // scroll to the bottom on new output lines
-                            scrollView.scrollTo(script.output[script.output.endIndex - 1])
+        GeometryReader { geometry in
+            ScrollView(){
+                ScrollViewReader { scrollView in
+                    VStack(alignment: .trailing) {
+                        ForEach(script.output, id: \.self) { op in
+                            Text(op)
+                                .multilineTextAlignment(.leading)
+                                .font(.custom("HelveticaNeue", size: 16))
+                                .onAppear{
+                                    // scroll to the bottom on new output lines
+                                    scrollView.scrollTo(script.output[script.output.endIndex - 1])
+                                }
+                                .frame(maxWidth: .infinity,
+                                       alignment: .leading)
                         }
-                        .padding()
+                    }
                 }
-            }
+            }.padding()
         }
     }
 }
