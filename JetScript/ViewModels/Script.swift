@@ -9,23 +9,38 @@ import Foundation
 
 /// Class to manage scripts execution and running functions.
 class Script: ObservableObject {
+    // MARK: - Variables
     @Published var output: [String] = []
     @Published var exitCode: Int32 = -1
+    @Published var timeEstimate: Int = 0
+    
     private let file: String = "JetScript.swift" // this is the file name which we will write to.
     private var fileURL: URL? = nil
-    private var numberOfTimes: Int = 1
+    private var numberOfRuns: Int = 1
     private var errorOccured: Bool = false
     
+    private var timer: Timer?
+    private var currentTimeCounter: Int = 0
+    private var timeCountersArray: [Int] = []
+    private var remaningRuns: Int = 0 {
+        didSet{
+            updateTimeEstimate() // After every run, update the timeEstimate value.
+        }
+    }
+    
+    // MARK: - Script Methods
     /**
-     Executing the script will wirte it to a local file first, then run it
+     Executing the script will wirte it to a local file first, then run it.
      
      - parameter scriptCode: Script code to be executed.
      - parameter times: Number of times for the script to be executed.
      */
     func executeScript(_ scriptCode: String, times numberOfTimes: Int){
         output.removeAll()
+        timeCountersArray.removeAll()
         errorOccured = false
-        self.numberOfTimes = numberOfTimes
+        remaningRuns = numberOfTimes
+        self.numberOfRuns = numberOfTimes
         
         // replace any wrong marks
         let fixedScript = scriptCode.replacingOccurrences(of: "“", with: "\"")
@@ -53,7 +68,7 @@ class Script: ObservableObject {
             }
         }
         
-        for _ in 1...numberOfTimes{
+        while remaningRuns > 0 {
             if !errorOccured{
                 runScript()
             } else { break }
@@ -61,8 +76,9 @@ class Script: ObservableObject {
     }
     
     /// Last step to run the script, handles any errors, gets the output and the exit code.
-    private func runScript(){
+    private func runScript(){        
         guard let fileURL = self.fileURL else { return }
+        startTimer()
         
         let args = ["swift", fileURL.path]
         let cmd = "/usr/bin/env"
@@ -111,9 +127,54 @@ class Script: ObservableObject {
         task.launch()
         
         task.waitUntilExit()
-        
+        killTimer(self)
+        remaningRuns -= 1
         let status = task.terminationStatus
         
         exitCode = status
+    }
+    
+    // MARK: - Timer Methods
+    
+    private func startTimer(){
+        timer = Timer.scheduledTimer(timeInterval:1, target:self, selector:#selector(processTimer), userInfo: nil, repeats: true)
+    }
+    
+    /**
+     Should be called every one second.
+     
+     # Operations #
+     1. Increases `currentTimeCounter`
+     2. If `timeEstimate`  > 0, decreases it by 1
+     */
+    @objc private func processTimer(){
+        currentTimeCounter += 1
+        if timeEstimate > 0{
+            timeEstimate -= 1
+        }
+    }
+    
+    /**
+     Kills the current timer.
+     
+     # Operations #
+     1. Adds it to the `timeCountersArray`.
+     2. Resets the `currentTimeCounter`.
+     */
+    private func killTimer(_ sender: AnyObject){
+        timer?.invalidate()
+        timer = nil
+        timeCountersArray.append(currentTimeCounter)
+        currentTimeCounter = 0
+    }
+    
+    /// Updates the `timeEstimate` to finish all the tasks
+    func updateTimeEstimate(){
+        if !timeCountersArray.isEmpty{
+            let sum = timeCountersArray.reduce(0, +)
+            let avg = sum / timeCountersArray.count
+            
+            timeEstimate = avg * remaningRuns
+        }
     }
 }

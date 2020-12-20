@@ -25,6 +25,9 @@ struct EditorView: View {
             HStack{
                 PulsatingView(pulseViewModel: $pulseVModel, shouldAnimate: $shouldAnimate)
                 
+                Text(String(script.timeEstimate))
+                    .padding()
+                
                 Spacer()
                 
                 Button(action: {
@@ -38,7 +41,6 @@ struct EditorView: View {
                 Stepper(value: $numberOfTimes, in: 1...100000) {
                     Text("\(numberOfTimes)")
                 }
-                
             }
             .padding([.leading, .trailing, .bottom])
         }
