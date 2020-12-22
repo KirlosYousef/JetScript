@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  ViewContainer.swift
 //  JetScript
 //
 //  Created by Kirlos Yousef on 17/12/2020.
@@ -7,29 +7,25 @@
 
 import SwiftUI
 
-class WindowSize {
-    let minWidth : CGFloat = 600
-    let minHeight : CGFloat = 400
-}
-
-struct MainView: View {
-    @EnvironmentObject var script: Script
+struct ViewContainer: View {
+    @EnvironmentObject var script: ScriptVM
     
     var body: some View {
         GeometryReader { geometry in
             VStack{
                 ZStack(alignment: .bottomLeading){
                     HStack{
-                        EditorView()
+                        ScriptInputView()
                             .frame(minWidth: geometry.size.width / 2, maxWidth: .infinity,
                                    minHeight: geometry.size.height, maxHeight: .infinity)
                             .environmentObject(script)
                         
-                        OutputScrollView()
+                        Divider()
+                        
+                        ScriptOutputView()
                             .frame(minWidth: geometry.size.width / 2, maxWidth: .infinity,
                                    minHeight: geometry.size.height, maxHeight: .infinity)
                             .environmentObject(script)
-                            .background(Color(.darkGray))
                     }
                     
                     ProgressBarView()
@@ -37,15 +33,15 @@ struct MainView: View {
                         .environmentObject(script)
                 }
             }
-            .frame(minWidth: WindowSize().minWidth,
-                   minHeight: WindowSize().minHeight)
-            .background(Color(.controlBackgroundColor))
+            .frame(minWidth: Constants.minWidth,
+                   minHeight: Constants.minHeight)
+            .background(Constants.backgroundColor)
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct ViewContainer_Previews: PreviewProvider {
     static var previews: some View {
-        MainView().environmentObject(Script())
+        ViewContainer().environmentObject(ScriptVM())
     }
 }

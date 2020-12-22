@@ -1,5 +1,5 @@
 //
-//  Script.swift
+//  ScriptVM.swift
 //  JetScript
 //
 //  Created by Kirlos Yousef on 17/12/2020.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// Class to manage scripts execution and running functions.
-class Script: ObservableObject {
+class ScriptVM: ObservableObject {
     // MARK: - Variables
     @Published var output: [String] = []
     @Published var exitCode: Int32 = -1

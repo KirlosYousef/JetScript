@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct PulsatingView: View {
-    @Binding var pulseViewModel: PulseViewModel
+    @Binding var pulseViewModel: PulseVM
     @Binding var shouldAnimate: Bool
     
     func getColor() -> Color {
@@ -40,8 +40,8 @@ struct PulsatingView: View {
     }
 }
 
-struct PulseColorViewPreview: View {
-    @State private var model = PulseViewModel()
+private struct PulsatingViewPreview: View {
+    @State private var model = PulseVM()
     @State var shouldAnimate = true
     
     var body: some View {
@@ -53,6 +53,6 @@ struct PulseColorViewPreview: View {
 
 struct PulseColorViewPreview_Previews: PreviewProvider {
     static var previews: some View {
-        PulseColorViewPreview()
+        PulsatingViewPreview()
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProgressBarView: View {
-    @EnvironmentObject var script: Script
+    @EnvironmentObject var script: ScriptVM
     
     private func progress(width: CGFloat) -> CGFloat {
         let percentage =  Double(script.timeEstimate) /
@@ -40,8 +40,18 @@ struct ProgressBarView: View {
 
 struct ProgressBarView_Previews: PreviewProvider {
     static var previews: some View {
-        ProgressBarView()
-            .frame(width: 400, height: 15)
-            .environmentObject(Script())
+        Group {
+            ProgressBarView()
+                .frame(width: 400, height: 15)
+                .environmentObject(ScriptVM())
+                .environment(\.colorScheme, .dark)
+                .previewDisplayName("Dark Mode")
+            
+            ProgressBarView()
+                .frame(width: 400, height: 15)
+                .environmentObject(ScriptVM())
+                .environment(\.colorScheme, .light)
+                .previewDisplayName("Light Mode")
+        }
     }
 }

@@ -15,20 +15,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.
-        let contentView = MainView()
-            .frame(minWidth: WindowSize().minWidth, maxWidth: .infinity,
-                   minHeight: WindowSize().minHeight, maxHeight: .infinity)
+        let contentView = ViewContainer()
+            .frame(minWidth: Constants.minWidth, maxWidth: .infinity,
+                   minHeight: Constants.minHeight, maxHeight: .infinity)
         // Create the window and set the content view.
         window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: WindowSize().minWidth,
-                                height: WindowSize().minHeight),
+            contentRect: NSRect(x: 0, y: 0, width: Constants.minWidth,
+                                height: Constants.minHeight),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)
         
         window.isReleasedWhenClosed = false
         window.center()
         window.setFrameAutosaveName("Main Window")
-        window.contentView = NSHostingView(rootView: contentView.environmentObject(Script()))
+        window.contentView = NSHostingView(rootView: contentView.environmentObject(ScriptVM()))
         window.makeKeyAndOrderFront(nil)
     }
     
