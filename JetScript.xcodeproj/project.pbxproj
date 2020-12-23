@@ -15,6 +15,7 @@
 		BC03D8FC258BD4FE005B96F8 /* ScriptVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC03D8FB258BD4FE005B96F8 /* ScriptVM.swift */; };
 		BC21DEC1259295F90060B787 /* Keywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC21DEC0259295F90060B787 /* Keywords.swift */; };
 		BC21DEC3259299CB0060B787 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC21DEC2259299CB0060B787 /* Constants.swift */; };
+		BC24D5E42593778E001C038B /* StringRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24D5E32593778E001C038B /* StringRanges.swift */; };
 		BC34CCB9258FB3950009718E /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC34CCB8258FB3950009718E /* ProgressBarView.swift */; };
 		BC3AF685258F7C160005E3AF /* PulseVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3AF684258F7C160005E3AF /* PulseVM.swift */; };
 		BC663578258D03F4009FA5F1 /* ScriptOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC663577258D03F4009FA5F1 /* ScriptOutputView.swift */; };
@@ -35,6 +36,7 @@
 		BC03D8FB258BD4FE005B96F8 /* ScriptVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptVM.swift; sourceTree = "<group>"; };
 		BC21DEC0259295F90060B787 /* Keywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keywords.swift; sourceTree = "<group>"; };
 		BC21DEC2259299CB0060B787 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BC24D5E32593778E001C038B /* StringRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRanges.swift; sourceTree = "<group>"; };
 		BC34CCB8258FB3950009718E /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		BC3AF684258F7C160005E3AF /* PulseVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseVM.swift; sourceTree = "<group>"; };
 		BC663577258D03F4009FA5F1 /* ScriptOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptOutputView.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			children = (
 				BC21DEC0259295F90060B787 /* Keywords.swift */,
 				BC21DEC2259299CB0060B787 /* Constants.swift */,
+				BC24D5E32593778E001C038B /* StringRanges.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				BC663578258D03F4009FA5F1 /* ScriptOutputView.swift in Sources */,
 				BC66357A258D0473009FA5F1 /* ScriptInputView.swift in Sources */,
 				BC9573CE258FE84F0040F762 /* ScriptTextView.swift in Sources */,
+				BC24D5E42593778E001C038B /* StringRanges.swift in Sources */,
 				BC34CCB9258FB3950009718E /* ProgressBarView.swift in Sources */,
 				BC03D8E9258BD0EB005B96F8 /* AppDelegate.swift in Sources */,
 				BC3AF685258F7C160005E3AF /* PulseVM.swift in Sources */,

@@ -90,7 +90,9 @@ final class CustomTextView: NSView {
         
         // for each keyword call the `drawColor` function
         Keywords.all.allCases.forEach { (keyword) in
-            highlightKeyword("\(keyword.rawValue)")
+            if text.contains(keyword.rawValue){
+                highlightKeyword("\(keyword.rawValue)")
+            }
         }
         
         /**
@@ -111,7 +113,6 @@ final class CustomTextView: NSView {
     
     var inputText: String {
         didSet {
-            textView.string = inputText
             textView.textStorage?.setAttributedString(setTextStyle(for: inputText))
         }
     }
@@ -184,18 +185,5 @@ final class CustomTextView: NSView {
     
     func setupTextView() {
         scrollView.documentView = textView
-    }
-}
-
-// MARK: - String Extension
-extension String {
-    func ranges(of substring: String, options: CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] {
-        var ranges: [Range<Index>] = []
-        while ranges.last.map({ $0.upperBound < self.endIndex }) ?? true,
-              let range = self.range(of: substring, options: options, range: (ranges.last?.upperBound ?? self.startIndex)..<self.endIndex, locale: locale)
-        {
-            ranges.append(range)
-        }
-        return ranges
     }
 }
