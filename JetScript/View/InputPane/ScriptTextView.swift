@@ -10,7 +10,7 @@ import SwiftUI
 
 // MARK: - View
 struct ScriptTextView: NSViewRepresentable {
-    
+    @EnvironmentObject var script: ScriptVM
     @Binding var input: String
     
     func makeCoordinator() -> Coordinator {
@@ -19,7 +19,8 @@ struct ScriptTextView: NSViewRepresentable {
     
     func makeNSView(context: Context) -> CustomTextView {
         let textView = CustomTextView(
-            text: input
+            text: input,
+            errorLineIndex: script.errorLineIndex
         )
         textView.delegate = context.coordinator
         
@@ -28,23 +29,23 @@ struct ScriptTextView: NSViewRepresentable {
     
     func updateNSView(_ view: CustomTextView, context: Context) {
         view.inputText = input
+        view.errorLineIndex = script.errorLineIndex
+        view.selectedRanges = context.coordinator.selectedRanges
     }
 }
 
 struct ScriptTextView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ScriptTextView(
-                input: .constant("for i in 0…100000{ \n print(i) \n }")
-            )
-            .environment(\.colorScheme, .dark)
-            .previewDisplayName("Dark Mode")
+            ScriptTextView( input: .constant("for i in 0…100000{ \n print(i) \n }") )
+                .environmentObject(ScriptVM())
+                .environment(\.colorScheme, .dark)
+                .previewDisplayName("Dark Mode")
             
-            ScriptTextView(
-                input: .constant("for i in 0…100000{ \n print(i) \n }")
-            )
-            .environment(\.colorScheme, .light)
-            .previewDisplayName("Light Mode")
+            ScriptTextView( input: .constant("for i in 0…100000{ \n print(i) \n }") )
+                .environmentObject(ScriptVM())
+                .environment(\.colorScheme, .light)
+                .previewDisplayName("Light Mode")
         }
     }
 }
@@ -54,6 +55,7 @@ extension ScriptTextView {
     
     class Coordinator: NSObject, NSTextViewDelegate {
         var parent: ScriptTextView
+        var selectedRanges: [NSValue] = []
         
         init(_ parent: ScriptTextView) {
             self.parent = parent
@@ -65,6 +67,7 @@ extension ScriptTextView {
             }
             
             self.parent.input = textView.string
+            self.selectedRanges = textView.selectedRanges
         }
     }
 }
@@ -80,7 +83,7 @@ final class CustomTextView: NSView {
      - parameter for: the input text to style.
      - warning: this happens many times for every text change, so it's not efficient, but it's here for now.
      */
-    func setTextStyle(for text: String) -> NSMutableAttributedString{
+    func setTextStyle(for text: String, errorLine: Int = -1) -> NSMutableAttributedString{
         
         // default font and color for the text
         let defaultAttributes = [ NSAttributedString.Key.foregroundColor: NSColor(Constants.labelColor),
@@ -102,9 +105,30 @@ final class CustomTextView: NSView {
          */
         func highlightKeyword(_ word: String){
             (text as String).ranges(of: word, options: .literal).forEach { (r) in
-                attributedString.addAttribute(
-                    .foregroundColor, value: keywords.keywordColor(Keywords.all(rawValue: word) ?? .default),
-                    range: NSRange(r, in: text))
+                let keywordColor = keywords.keywordColor(Keywords.all(rawValue: word) ?? .default)
+                
+                attributedString.addAttribute(.foregroundColor,
+                                              value: keywordColor.withAlphaComponent(0.9),
+                                              range: NSRange(r, in: text))
+            }
+        }
+        
+        // to set the error line background color, when choosing it from the output
+        if errorLine != -1{
+            let lines =  text.components(separatedBy:"\n")
+            
+            if (errorLine - 1) < lines.count{
+                var errorLineString = lines[errorLine - 1]
+                
+                if lines.count != errorLine{ // if last line
+                    errorLineString += "\n"
+                }
+                
+                guard let range = (text as String).range(of: errorLineString, options: .literal) else { return attributedString }
+                
+                attributedString.addAttribute(.backgroundColor,
+                                              value: NSColor.systemRed.withAlphaComponent(0.5),
+                                              range: NSRange(range, in: errorLineString))
             }
         }
         
@@ -117,9 +141,32 @@ final class CustomTextView: NSView {
         }
     }
     
+    var errorLineIndex: Int? {
+        didSet{
+            guard let line = errorLineIndex else { return }
+            if line != -1{
+                textView.textStorage?.setAttributedString(setTextStyle(for: inputText, errorLine: line))
+            }
+        }
+    }
+    
+    var selectedRanges: [NSValue] = [] {
+        didSet {
+            guard selectedRanges.count > 0 else {
+                return
+            }
+            textView.selectedRanges = selectedRanges
+        }
+    }
+    
     private lazy var scrollView: NSScrollView = {
         let scrollView = NSScrollView()
+        scrollView.drawsBackground = true
+        scrollView.borderType = .noBorder
         scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalRuler = false
+        scrollView.autoresizingMask = [.width, .height]
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         return scrollView
     }()
@@ -152,7 +199,7 @@ final class CustomTextView: NSView {
     }()
     
     // MARK: - Init
-    init(text: String) {
+    init(text: String, errorLineIndex: Int?) {
         self.inputText = text
         
         super.init(frame: .zero)

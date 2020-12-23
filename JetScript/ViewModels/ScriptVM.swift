@@ -12,6 +12,7 @@ class ScriptVM: ObservableObject {
     // MARK: - Variables
     @Published var output: [String] = []
     @Published var exitCode: Int32 = -1
+    @Published var errorLineIndex: Int = -1
     @Published var timeEstimate: Int = 0
     @Published var allTime: Int = 0
     

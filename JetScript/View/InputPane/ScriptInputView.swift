@@ -10,14 +10,15 @@ import SwiftUI
 /// The editor pane to write a script to execute
 struct ScriptInputView: View {
     @EnvironmentObject var script: ScriptVM
-    @State private var inputText: String = ""
     @State private var pulseVModel = PulseVM()
     @State private var shouldAnimate: Bool = false
+    @State private var inputText: String = ""
     @State private var numberOfTimes: Int = 1
     
     var body: some View {
         VStack(alignment: .trailing){
             ScriptTextView(input: $inputText)
+                .environmentObject(script)
                 .padding([.leading, .trailing, .top])
             
             HStack{
