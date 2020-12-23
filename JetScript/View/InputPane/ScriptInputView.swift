@@ -10,10 +10,7 @@ import SwiftUI
 /// The editor pane to write a script to execute
 struct ScriptInputView: View {
     @EnvironmentObject var script: ScriptVM
-    @State private var pulseVModel = PulseVM()
-    @State private var shouldAnimate: Bool = false
     @State private var inputText: String = ""
-    @State private var numberOfTimes: Int = 1
     
     var body: some View {
         VStack(alignment: .trailing){
@@ -21,6 +18,22 @@ struct ScriptInputView: View {
                 .environmentObject(script)
                 .padding([.leading, .trailing, .top])
             
+            BottomLineView(inputText: $inputText)
+                .environmentObject(script)
+        }
+        .background(Constants.backgroundColor)
+    }
+}
+
+private struct BottomLineView: View {
+    @EnvironmentObject var script: ScriptVM
+    @Binding var inputText: String
+    @State private var numberOfTimes: Int = 1
+    @State private var pulseVModel = PulseVM()
+    @State private var shouldAnimate: Bool = false
+    
+    var body: some View {
+        VStack {
             HStack{
                 PulsatingView(pulseViewModel: $pulseVModel, shouldAnimate: $shouldAnimate)
                 
@@ -40,14 +53,13 @@ struct ScriptInputView: View {
                         .foregroundColor(Constants.labelColor)
                 }
                 
-                Stepper(value: $numberOfTimes, in: 1...100000) {
+                Stepper(value: $numberOfTimes, in: 1...Int.max) {
                     Text("\(numberOfTimes)")
                         .foregroundColor(Constants.labelColor)
                 }
             }
             .padding([.leading, .trailing, .bottom])
         }
-        .background(Constants.backgroundColor)
     }
 }
 
