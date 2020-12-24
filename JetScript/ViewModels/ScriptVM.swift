@@ -19,12 +19,12 @@ class ScriptVM: ObservableObject {
     private let file: String = "JetScript.swift" // this is the file name which we will write to.
     private var fileURL: URL? = nil
     private var numberOfRuns: Int = 1
-    private var errorOccured: Bool = false
+    private var errorOccurred: Bool = false
     
     private var timer: Timer?
     private var currentTimeCounter: Int = 0
     private var timeCountersArray: [Int] = []
-    private var remaningRuns: Int = 0 {
+    private var remainingRuns: Int = 0 {
         didSet{
             updateTimeEstimate() // After every run, update the timeEstimate value.
         }
@@ -32,7 +32,7 @@ class ScriptVM: ObservableObject {
     
     // MARK: - Script Methods
     /**
-     Executing the script will wirte it to a local file first, then run it.
+     Executing the script will write it to a local file first, then run it.
      
      - parameter scriptCode: Script code to be executed.
      - parameter times: Number of times for the script to be executed.
@@ -40,9 +40,9 @@ class ScriptVM: ObservableObject {
     func executeScript(_ scriptCode: String, times numberOfTimes: Int){
         output.removeAll()
         timeCountersArray.removeAll()
-        errorOccured = false
-        remaningRuns = numberOfTimes
-        self.numberOfRuns = numberOfTimes
+        errorOccurred = false
+        remainingRuns = numberOfTimes
+        numberOfRuns = numberOfTimes
         
         // replace any wrong marks
         let fixedScript = scriptCode.replacingOccurrences(of: "“", with: "\"")
@@ -64,22 +64,22 @@ class ScriptVM: ObservableObject {
                 try scriptCode.write(to: fileURL!, atomically: false, encoding: .utf8)
             }
             catch {
-                self.output.append("Error occured while writing the script to a file!")
-                self.output.append(error.localizedDescription)
+                output.append("Error occurred while writing the script to a file!")
+                output.append(error.localizedDescription)
                 return
             }
         }
         
-        while remaningRuns > 0 {
-            if !errorOccured{
+        while remainingRuns > 0 {
+            if !errorOccurred{
                 runScript()
             } else { break }
         }
     }
     
     /// Last step to run the script, handles any errors, gets the output and the exit code.
-    private func runScript(){        
-        guard let fileURL = self.fileURL else { return }
+    private func runScript(){
+        guard let fileURL = fileURL else { return }
         startTimer()
         
         let args = ["swift", fileURL.path]
@@ -90,14 +90,14 @@ class ScriptVM: ObservableObject {
         task.arguments = args
         
         // Output pipe
-        let pipe = Pipe()
-        task.standardOutput = pipe
-        let outHandle = pipe.fileHandleForReading
+        let outputPipe = Pipe()
+        task.standardOutput = outputPipe
+        let outHandle = outputPipe.fileHandleForReading
         
         // Error pipe
-        let errpipe = Pipe()
-        task.standardError = errpipe
-        let errorHandle = errpipe.fileHandleForReading
+        let errPipe = Pipe()
+        task.standardError = errPipe
+        let errorHandle = errPipe.fileHandleForReading
         
         // Output handling
         outHandle.readabilityHandler = { pipe in
@@ -118,7 +118,7 @@ class ScriptVM: ObservableObject {
                 if !line.isEmpty{
                     DispatchQueue.main.async {
                         self.output.append(line)
-                        self.errorOccured = true
+                        self.errorOccurred = true
                     }
                 }
             } else {
@@ -130,7 +130,7 @@ class ScriptVM: ObservableObject {
         
         task.waitUntilExit()
         killTimer(self)
-        remaningRuns -= 1
+        remainingRuns -= 1
         let status = task.terminationStatus
         
         exitCode = status
@@ -175,13 +175,13 @@ class ScriptVM: ObservableObject {
         if !timeCountersArray.isEmpty{
             let sum = timeCountersArray.reduce(0, +)
             let avg = sum / timeCountersArray.count
-            timeEstimate = avg * remaningRuns
+            timeEstimate = avg * remainingRuns
             updateAllTime(avg)
         }
     }
     
     // Updates the all time estimated for the progress bar
     private func updateAllTime(_ avg: Int){
-        self.allTime = avg * numberOfRuns
+        allTime = avg * numberOfRuns
     }
 }

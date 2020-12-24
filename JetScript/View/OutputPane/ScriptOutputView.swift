@@ -13,7 +13,7 @@ struct ScriptOutputView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ScrollView(){
+            ScrollView{
                 ScrollViewReader { scrollView in
                     VStack(alignment: .trailing) {
                         ForEach(script.output, id: \.self) { op in

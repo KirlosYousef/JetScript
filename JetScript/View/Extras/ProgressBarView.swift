@@ -28,7 +28,7 @@ struct ProgressBarView: View {
                     
                     Rectangle()
                         .frame(width:
-                                self.progress(width: geometry.size.width),
+                                progress(width: geometry.size.width),
                                height: geometry.size.height)
                         .foregroundColor(Color(.systemBlue))
                         .animation(.linear)

@@ -66,8 +66,8 @@ extension ScriptTextView {
                 return
             }
             
-            self.parent.input = textView.string
-            self.selectedRanges = textView.selectedRanges
+            parent.input = textView.string
+            selectedRanges = textView.selectedRanges
         }
     }
 }
@@ -200,7 +200,7 @@ final class CustomTextView: NSView {
     
     // MARK: - Init
     init(text: String, errorLineIndex: Int?) {
-        self.inputText = text
+        inputText = text
         
         super.init(frame: .zero)
     }
